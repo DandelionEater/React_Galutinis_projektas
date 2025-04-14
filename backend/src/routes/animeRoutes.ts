@@ -1,10 +1,11 @@
-import express, { Request, Response } from "express";
-import Anime from "../models/Anime";
+import express, { Request, Response, RequestHandler } from 'express';
+import { authMiddleware } from '../middleware/authMiddleware';
+import Anime from '../models/Anime';
 
 const router = express.Router();
 
 // Create (C) - Sukurti naują anime
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", authMiddleware, async (req: Request, res: Response) => {
   try {
     const newAnime = new Anime(req.body);
     await newAnime.save();
@@ -25,7 +26,7 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 // Update (U) - Atnaujinti anime pagal ID
-router.put("/:id", async (req: Request<{ id: string }>, res: Response) => {
+router.put("/:id", authMiddleware, async (req: Request<{ id: string }>, res: Response) => {
   try {
     const updatedAnime = await Anime.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updatedAnime) return res.status(404).json({ message: "Anime nerasta" });
@@ -36,7 +37,7 @@ router.put("/:id", async (req: Request<{ id: string }>, res: Response) => {
 });
 
 // Delete (D) - Pašalinti anime pagal ID
-router.delete("/:id", async (req: Request<{ id: string }>, res: Response) => {
+router.delete("/:id", authMiddleware, async (req: Request<{ id: string }>, res: Response) => {
   try {
     const deletedAnime = await Anime.findByIdAndDelete(req.params.id);
     if (!deletedAnime) return res.status(404).json({ message: "Anime nerasta" });
