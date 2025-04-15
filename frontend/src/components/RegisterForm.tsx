@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterForm: React.FC = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useAuth();
+  const { login, user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Tikras API kvietimas registracijai
     try {
       const response = await fetch("http://localhost:3000/api/auth/register", {
         method: "POST",
@@ -21,18 +28,18 @@ const RegisterForm: React.FC = () => {
       });
 
       const data = await response.json();
+      console.log("Is backendo gauti duomenys:", data);
 
       if (response.ok) {
-        const { token, user } = data; // Gauti tokeną ir naudotojo informaciją
+        const { token, user } = data;
 
-        // Išsaugoti tokeną vietos saugykloje
         localStorage.setItem("authToken", token);
 
-        // Login funkcija iš AuthContext
         login(user);
 
-        // Galite peradresuoti į norimą puslapį po registracijos
         console.log("Registracija sėkminga, naudotojas prisijungė");
+
+        navigate('/');
       } else {
         console.error("Registracijos klaida:", data.message);
       }

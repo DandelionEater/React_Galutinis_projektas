@@ -7,10 +7,13 @@ import Account from './pages/Account';
 import WelcomeScreen from './pages/WelcomeScreen';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
+import SelectedMedia from './pages/SelectedMedia';
 import { useAuth } from './context/AuthContext';
 
 function App() {
   const { user } = useAuth();
+
+  console.log("App mato user:", user);
 
   return (
     <Router>
@@ -28,6 +31,7 @@ function App() {
               <Route path="/welcome" element={<WelcomeScreen />} />
               <Route path="/login" element={<LoginForm />} />
               <Route path="/register" element={<RegisterForm />} />
+              <Route path="/media/:id" element={<SelectedMedia />} />
             </Routes>
           </div>
         </>

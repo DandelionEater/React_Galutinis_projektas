@@ -16,9 +16,16 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(() => {
-    const savedUser = localStorage.getItem('user');
-    return savedUser === null ? JSON.parse(savedUser ?? "null") : null;
+    try {
+      const savedUser = localStorage.getItem('user');
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch (error) {
+      console.error("Klaida skaitant user iš localStorage:", error);
+      localStorage.removeItem('user');
+      return null;
+    }
   });
+  
 
   const login = (userData: User) => {
     setUser(userData);
@@ -27,7 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user');
+    localStorage.removeItem('authToken');
   };
 
   return (

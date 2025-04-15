@@ -10,14 +10,13 @@ const LoginForm: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
+    if (user && !window.location.pathname.includes('/login') && !window.location.pathname.includes('/register')) {
       navigate('/');
     }
   }, [user, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
   
     // Tikras API kvietimas prisijungimui
     try {
@@ -28,18 +27,19 @@ const LoginForm: React.FC = () => {
         },
         body: JSON.stringify({ username, password }),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
         const { token, user } = data;
-
+  
         localStorage.setItem("authToken", token);
-
+  
         login(user);
-
+  
         console.log("Prisijungta sėkmingai");
-
+  
+        // Po prisijungimo tiesiogiai naršome į pagrindinį puslapį
         navigate('/');
       } else {
         console.error("Prisijungimo klaida:", data.message);

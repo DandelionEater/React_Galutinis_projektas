@@ -29,7 +29,20 @@ router.post('/register', async (req, res) => {
 
   try {
     await user.save();
-    res.status(201).json({ message: 'User created successfully' });
+
+    // Sukuriam tokeną po registracijos
+    const token = jwt.sign({ id: user._id }, Buffer.from(process.env.JWT_SECRET ?? "secret"), { expiresIn: '1h' });
+
+    // Grąžinam tokeną ir naudotojo duomenis (be slaptažodžio!)
+    res.status(201).json({
+      message: 'User created successfully',
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        avatarUrl: user.avatarUrl, // jei tokį turi
+      }
+    });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -54,7 +67,14 @@ router.post('/login', async (req, res) => {
     // Sukuriame JWT tokeną
     const token = jwt.sign({ id: user._id }, Buffer.from(process.env.JWT_SECRET ?? "secret"), { expiresIn: '1h' });
   
-    res.json({ token });
+    res.json({
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        avatarUrl: user.avatarUrl, // jei turi
+      }
+    });
   });
 
 export default router;

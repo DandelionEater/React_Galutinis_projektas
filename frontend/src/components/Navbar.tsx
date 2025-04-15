@@ -1,13 +1,15 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from "../context/AuthContext";
 
 const Navbar: React.FC = () => {
   const userImage = 'https://i.pravatar.cc/40';
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");  // Pašalinti prisijungimo informaciją
-    navigate("/welcome");  // Peradresuoti į pagrindinį puslapį
+    logout();
+    navigate("/welcome");
   };
 
   return (
@@ -48,6 +50,7 @@ const Navbar: React.FC = () => {
               Logout
             </button>
           </li>
+          
         </ul>
       </div>
     </nav>
