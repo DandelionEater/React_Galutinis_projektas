@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import animeRoutes from "./routes/animeRoutes";
+import anilistRoutes from "./routes/anilistRoutes";
 import authRoutes from "./routes/authRoutes"; // 👈 nauja
 import { authMiddleware } from "./middleware/authMiddleware"; // 👈 jei naudosi apsaugotus maršrutus
 
@@ -10,7 +11,6 @@ import { authMiddleware } from "./middleware/authMiddleware"; // 👈 jei naudos
 
 // Įkeliam .env failą
 import path from "path";
-import Context from "types/express";
 import CustomRequest from "types/express";
 dotenv.config({ path: path.resolve(__dirname, "../anime_tracker.env") });
 
@@ -32,6 +32,7 @@ mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/anime_track
 
 // Maršrutai
 app.use("/api/animes", animeRoutes);
+app.use("/api/anilist", anilistRoutes);
 app.use("/api/auth", authRoutes); // 👈 pridėta autentifikacijos maršrutams
 
 // Testinis apsaugotas route (nebūtinas dabar, bet parodymui)

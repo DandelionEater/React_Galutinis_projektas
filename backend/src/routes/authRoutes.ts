@@ -25,6 +25,7 @@ router.post('/register', async (req, res) => {
     username,
     email,
     password: hashedPassword,
+    animeList: []
   });
 
   try {

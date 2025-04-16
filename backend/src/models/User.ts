@@ -1,4 +1,20 @@
-import mongoose from 'mongoose';
+import mongoose, { Int32 } from 'mongoose';
+import { Url } from 'url';
+
+export const enum WatchStatus {
+  Planned,
+  Watching,
+  Paused,
+  Dropped,
+  Completed
+}
+
+export class Anime {
+  animeId: number = -1;
+  completedEpisodes: number = 0;
+  score: number = 0;
+  status: WatchStatus = WatchStatus.Planned;
+}
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -18,6 +34,9 @@ const userSchema = new mongoose.Schema({
   avatarUrl: {
     type: String,
   },
+  animeList: {
+    type: Array<Anime>
+  }
 });
 
 const User = mongoose.model('User', userSchema);
