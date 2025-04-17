@@ -1,64 +1,35 @@
-const API_URL = 'http://localhost:3000/api/animes'; // Priklausomai nuo jūsų serverio vietos
+const API_URL = 'http://localhost:3000/api/anilist'; // Priklausomai nuo jūsų serverio vietos
 
 // Gauti visus anime
-export const fetchAnimes = async () => {
+export const getAnime = async (animeid: number) => {
   try {
-    const response = await fetch(API_URL);
-    const data = await response.json();
+    const response = await fetch(`${API_URL}/get/${animeid}`, {
+      method: 'GET'
+    });
+    const data: {
+      id: number;
+      title: string;
+      type: string;
+      description: string;
+      coverImage: string;
+      episodes: number;
+      genres: string[];
+      score: number;
+    } = (await response.json()).response; 
+    
     return data;
   } catch (error) {
     console.error("Klaida gaunant anime:", error);
-    return [];
+    return {} as {
+      id: number;
+      title: string;
+      type: string;
+      description: string;
+      coverImage: string;
+      episodes: number;
+      genres: string[];
+      score: number;
+    };
   }
 };
 
-// Sukurti naują anime
-export const createAnime = async (animeData: any) => {
-  try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(animeData),
-    });
-    const data = await response.json();
-    console.log("naujas anime:", data);
-    return data;
-  } catch (error) {
-    console.error("Klaida kuriant anime:", error);
-    return null;
-  }
-};
-
-// Atnaujinti anime pagal ID
-export const updateAnime = async (id: string, animeData: any) => {
-  try {
-    const response = await fetch(`${API_URL}/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(animeData),
-    });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Klaida atnaujinant anime:", error);
-    return null;
-  }
-};
-
-// Pašalinti anime pagal ID
-export const deleteAnime = async (id: string) => {
-  try {
-    const response = await fetch(`${API_URL}/${id}`, {
-      method: 'DELETE',
-    });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Klaida pašalinant anime:", error);
-    return null;
-  }
-};

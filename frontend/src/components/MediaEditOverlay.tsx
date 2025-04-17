@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MediaItem } from '../types/types';
+import { deleteEntry, updateEntry, WatchStatus } from '../utils/mediaUpdate';
 
 interface Props {
   media: MediaItem;
@@ -18,8 +19,28 @@ const MediaEditOverlay: React.FC<Props> = ({ media, onClose, onSave, onRemove })
 
   const handleSave = () => {
     onSave({ ...media, episodesWatched, rating, status });
+
+    var currentStatus : WatchStatus;
+
+    switch(status) {
+      case 'watching': currentStatus = WatchStatus.Watching; break;
+      case 'planning': currentStatus = WatchStatus.Planned; break;
+      case 'completed': currentStatus = WatchStatus.Completed; break;
+      case 'dropped': currentStatus = WatchStatus.Dropped; break;
+      case 'paused': currentStatus = WatchStatus.Paused; break;
+    }
+
+    updateEntry(media.id, { completedEpisodes: episodesWatched, score: rating, status: currentStatus })
     handleClose();
   };
+
+  const handleDelete = () => {
+    onRemove(media.id);
+
+    deleteEntry(media.id);
+
+    handleClose();
+  }
 
   const handleClose = () => {
     setIsVisible(false); // start fade-out animation
@@ -97,7 +118,7 @@ const MediaEditOverlay: React.FC<Props> = ({ media, onClose, onSave, onRemove })
               </motion.div>
               <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>Close</Button>
-                <Button variant="danger" onClick={() => { onRemove(media.id); handleClose(); }}>Remove</Button>
+                <Button variant="danger" onClick={handleDelete}>Remove</Button>
                 <Button variant="primary" onClick={handleSave}>Save Changes</Button>
               </Modal.Footer>
             </Modal>

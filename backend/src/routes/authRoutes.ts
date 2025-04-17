@@ -32,7 +32,7 @@ router.post('/register', async (req, res) => {
     await user.save();
 
     // Sukuriam tokeną po registracijos
-    const token = jwt.sign({ id: user._id }, Buffer.from(process.env.JWT_SECRET ?? "secret"), { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id }, Buffer.from(process.env.JWT_SECRET ?? "secret"), { expiresIn: '10h' });
 
     // Grąžinam tokeną ir naudotojo duomenis (be slaptažodžio!)
     res.status(201).json({

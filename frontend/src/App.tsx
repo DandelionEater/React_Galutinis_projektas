@@ -21,18 +21,20 @@ function App() {
         <WelcomeScreen />
       ) : (
         <>
-          <Navbar />
-          <div className="container mt-4">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/my-list" element={<MyList />} />
-              <Route path="/browse" element={<Browse />} />
-              <Route path="/account" element={<Account />} />
-              <Route path="/welcome" element={<WelcomeScreen />} />
-              <Route path="/login" element={<LoginForm />} />
-              <Route path="/register" element={<RegisterForm />} />
-              <Route path="/media/:id" element={<SelectedMedia />} />
-            </Routes>
+          <div className="d-flex flex-column min-vh-100">
+            <Navbar />
+            <div className="container flex-grow-1 mt-4">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/my-list" element={<MyList />} />
+                <Route path="/browse" element={<Browse />} />
+                <Route path="/account" element={<Account />} />
+                <Route path="/welcome" element={<WelcomeScreen />} />
+                <Route path="/login" element={<LoginForm />} />
+                <Route path="/register" element={<RegisterForm />} />
+                <Route path="/media/:id" element={<SelectedMedia />} />
+              </Routes>
+            </div>
           </div>
         </>
       )}

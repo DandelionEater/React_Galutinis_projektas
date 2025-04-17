@@ -14,7 +14,7 @@ router.post("/", authMiddleware, async (req: CustomRequest, res: Response) => {
 
     const updated = await User.findByIdAndUpdate(user._id, { $addToSet: { animeList: anime }}, { new: true });
 
-    res.status(201).json(updated);
+    res.status(201).json(updated?.animeList);
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: "Klaida kuriant anime", error });
@@ -34,12 +34,13 @@ router.get("/:id", authMiddleware, async (req: CustomRequest<{id: string}>, res:
   try {
     res.status(200).json(req.user.animeList[req.params.id]);
   } catch (error) {
+    console.error(error);
     res.status(400).json({ message: "Klaida gaunant anime", error });
   }
 })
 
 // Update (U) - Atnaujinti anime pagal ID
-router.put("/:id", authMiddleware, async (req: CustomRequest<{ id: string }>, res: Response) => {
+router.put("/:id", authMiddleware, async (req: CustomRequest<{ id: number }>, res: Response) => {
   try {
     const { anime } = req.body;
 
@@ -48,9 +49,11 @@ router.put("/:id", authMiddleware, async (req: CustomRequest<{ id: string }>, re
     const setFields: any = {};
     for (const key in anime) {
       if (anime[key] !== undefined) {
-        setFields[`animeList.${req.params.id}.${key}`] = anime[key];
+        setFields[`animeList.$[elem].${key}`] = anime[key];
       }
     }
+
+    console.log(req.params.id);
 
     res.status(200).json((await User.findByIdAndUpdate(
       req.user._id,
@@ -58,6 +61,7 @@ router.put("/:id", authMiddleware, async (req: CustomRequest<{ id: string }>, re
         $set: setFields
       },
       {
+        arrayFilters: [{ "elem.animeId": Number(req.params.id) }],
         new: true
       }
     ))?.animeList);
@@ -70,7 +74,9 @@ router.put("/:id", authMiddleware, async (req: CustomRequest<{ id: string }>, re
 router.delete("/:id", authMiddleware, async (req: CustomRequest<{ id: string }>, res: Response) => {
   try {
     await User.findByIdAndUpdate(req.user._id, {
-      $unset: { [`animeList.${req.params.id}`]: 1 }
+      $unset: { [`animeList.$[elem]`]: 1 }
+    }, {
+      arrayFilters: [{ "elem.animeId": Number(req.params.id) }]
     });
     await User.findByIdAndUpdate(req.user._id, {
       $pull: { animeList: null }

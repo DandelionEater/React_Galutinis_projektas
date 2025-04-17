@@ -10,6 +10,7 @@ export default class AniList {
                         title {
                             userPreferred
                         },
+                        type,
                         coverImage {
                             medium
                         }
@@ -28,8 +29,9 @@ export default class AniList {
         let result:{
             id: number;
             title: string;
+            type: string;
             description: string;
-            coverImage: Url;
+            coverImage: URL;
             episodes: number;
             genres: string[];
             score: number;
@@ -48,6 +50,7 @@ export default class AniList {
                     title {
                         userPreferred
                     },
+                    type,
                     coverImage {
                         medium
                     }
@@ -68,8 +71,9 @@ export default class AniList {
         return {
             id: data.id as number,
             title: data.title.userPreferred as string,
+            type: data.type as string,
             description: data.description as string,
-            coverImage: data.coverImage.medium as Url,
+            coverImage: data.coverImage.medium as URL,
             episodes: data.episodes as number,
             genres: data.genres as string[],
             score: data.meanScore as number 

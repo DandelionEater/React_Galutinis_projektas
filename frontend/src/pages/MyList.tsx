@@ -5,6 +5,8 @@ import SearchAndFilter from '../components/SearchAndFilter';
 import MediaToggle from '../components/MediaToggle';
 import MediaEditOverlay from '../components/MediaEditOverlay';
 import { MediaItem } from '../types/types';
+import { getAllFromList, WatchStatus } from "../utils/mediaUpdate";
+import { getAnime } from '../api/animeApi';
 
 const MyList = () => {
   const [mediaList, setMediaList] = useState<MediaItem[]>([]);
@@ -14,29 +16,49 @@ const MyList = () => {
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null)
 
   useEffect(() => {
-    const dummyList: MediaItem[] = [
-        {
-          id: 123,
-          title: 'Naruto',
-          imageUrl: 'https://placehold.co/100x150',
-          type: 'anime',
-          status: 'watching',
-          episodesWatched: 43,
-          totalEpisodes: 220,
-          rating: 8,
-        },
-        {
-            id: 456,
-            title: 'One Piece',
-            imageUrl: 'https://placehold.co/100x150',
-            type: 'anime',
-            status: 'completed',
-            episodesWatched: 700,
-            totalEpisodes: 1050,
-            rating: 9,
-        },
-    ];
-    setMediaList(dummyList);
+    const fetchList = async () => {
+      const list = await getAllFromList();
+  
+      const mediaItems: MediaItem[] = await Promise.all(
+        list.map(async (element) => {
+          const anime: {
+            id: number;
+            title: string;
+            type: string;
+            description: string;
+            coverImage: string;
+            episodes: number;
+            genres: string[];
+            score: number;
+          } = await getAnime(element.animeId);
+
+          var status = 'planning';
+
+          switch(element.status) {
+            case WatchStatus.Planned: status = 'planning'; break;
+            case WatchStatus.Watching: status = 'watching'; break;
+            case WatchStatus.Paused: status = 'paused'; break;
+            case WatchStatus.Dropped: status = 'dropped'; break;
+            case WatchStatus.Completed: status = 'completed'; break;
+          }
+  
+          return {
+            id: element.animeId,
+            title: anime.title,
+            imageUrl: anime.coverImage,
+            type: anime.type.toLowerCase(),
+            status: status,
+            episodesWatched: element.completedEpisodes, // Replace with real data if needed
+            totalEpisodes: anime.episodes,  // Replace with real data if needed
+            rating: element.score,           // Replace with real data if needed
+          } as MediaItem;
+        })
+      );
+  
+      setMediaList(mediaItems);
+    };
+  
+    fetchList();
   }, []);
 
   const handleSave = (updatedMedia: MediaItem) => {
