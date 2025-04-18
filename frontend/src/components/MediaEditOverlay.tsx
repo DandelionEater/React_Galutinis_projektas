@@ -43,8 +43,8 @@ const MediaEditOverlay: React.FC<Props> = ({ media, onClose, onSave, onRemove })
   }
 
   const handleClose = () => {
-    setIsVisible(false); // start fade-out animation
-    setTimeout(onClose, 300); // delay onClose to match animation duration
+    setIsVisible(false);
+    setTimeout(onClose, 300);
   };
 
   return (

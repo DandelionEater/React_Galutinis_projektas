@@ -9,9 +9,8 @@ const WelcomeScreen: React.FC = () => {
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
       <div className="text-center">
         <h1>Anime Tracker</h1>
-        <p>Sek savo mėgstamus anime ir manga!</p>
+        <p>Track your favorite anime and manga with ease!</p>
 
-        {/* Mygtukai su aktyvumo klasėmis */}
         <div className="btn-group my-3">
           <button
             className={`btn ${showLogin ? 'btn-primary' : 'btn-outline-primary'}`}
@@ -27,7 +26,6 @@ const WelcomeScreen: React.FC = () => {
           </button>
         </div>
 
-        {/* Formos rodymas pagal pasirinkimą */}
         {showLogin ? <LoginForm /> : <RegisterForm />}
       </div>
     </div>

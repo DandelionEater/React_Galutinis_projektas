@@ -94,7 +94,7 @@ const Home = () => {
       </Carousel>
 
       {/* Recent Releases */}
-      <h3 className="mt-5 mb-3">📅 Recent Releases</h3>
+      <h3 className="mt-5 mb-3">Recent Releases</h3>
       <div className="d-flex justify-content-center">
         <Row className="w-auto">
           {recent.map((anime) => (
@@ -126,7 +126,7 @@ const Home = () => {
       </div>
 
       {/* Recommendations */}
-      <h3 className="mt-5 mb-3">✨ Recommended For You</h3>
+      <h3 className="mt-5 mb-3">Recommended For You</h3>
       <div className="d-flex justify-content-center">
         <Row className="w-auto">
           {recommended.map((anime) => (

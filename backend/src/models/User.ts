@@ -1,5 +1,4 @@
 import mongoose, { Int32 } from 'mongoose';
-import { Url } from 'url';
 
 export const enum WatchStatus {
   Planned,

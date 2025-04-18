@@ -53,7 +53,7 @@ const RegisterForm: React.FC = () => {
       <input
         type="text"
         className="form-control my-2"
-        placeholder="Pasirink vartotojo vardą"
+        placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
         required
@@ -61,7 +61,7 @@ const RegisterForm: React.FC = () => {
       <input
         type="email"
         className="form-control my-2"
-        placeholder="El. paštas"
+        placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
@@ -69,12 +69,12 @@ const RegisterForm: React.FC = () => {
       <input
         type="password"
         className="form-control my-2"
-        placeholder="Slaptažodis"
+        placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
       />
-      <button type="submit" className="btn btn-primary w-100">Registruotis</button>
+      <button type="submit" className="btn btn-primary w-100">Register</button>
     </form>
   );
 };

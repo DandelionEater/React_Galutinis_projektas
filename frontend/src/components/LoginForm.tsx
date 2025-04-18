@@ -18,7 +18,6 @@ const LoginForm: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
   
-    // Tikras API kvietimas prisijungimui
     try {
       const response = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
@@ -39,7 +38,6 @@ const LoginForm: React.FC = () => {
   
         console.log("Prisijungta sėkmingai");
   
-        // Po prisijungimo tiesiogiai naršome į pagrindinį puslapį
         navigate('/');
       } else {
         console.error("Prisijungimo klaida:", data.message);
@@ -50,7 +48,6 @@ const LoginForm: React.FC = () => {
   };
 
   const handleAniListLogin = () => {
-    // Tai čia vėliau sujungsi su AniList API
     console.log("Log in with AniList...");
   };
 
@@ -59,7 +56,7 @@ const LoginForm: React.FC = () => {
       <input
         type="text"
         className="form-control my-2"
-        placeholder="Vartotojo vardas"
+        placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
         required
@@ -67,14 +64,13 @@ const LoginForm: React.FC = () => {
       <input
         type="password"
         className="form-control my-2"
-        placeholder="Slaptažodis"
+        placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
       />
-      <button type="submit" className="btn btn-success w-100">Prisijungti</button>
+      <button type="submit" className="btn btn-success w-100">Log in</button>
       
-      {/* AniList Login button */}
       <button 
         type="button"
         className="btn btn-outline-secondary w-100 mt-3"

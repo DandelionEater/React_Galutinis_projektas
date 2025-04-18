@@ -1,5 +1,3 @@
-import { Url } from "url";
-
 export default class AniList {
     async searchAnime(page: number, query : String | null | undefined = null) {
         const body = await (await this.sendRequest(JSON.stringify({

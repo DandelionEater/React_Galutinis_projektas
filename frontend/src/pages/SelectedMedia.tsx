@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import { getAllFromList, addToList } from '../utils/mediaUpdate';
 import MediaEditOverlay from '../components/MediaEditOverlay';
-import ToastPopup from '../components/ToastPopup'; // ✅ Toast popup import
+import ToastPopup from '../components/ToastPopup';
 import { MediaItem } from '../types/types';
 
 const ANILIST_API = 'https://graphql.anilist.co';
@@ -15,8 +15,8 @@ const SelectedMedia = () => {
   const [loading, setLoading] = useState(true);
   const [showOverlay, setShowOverlay] = useState(false);
   const [selectedMediaItem, setSelectedMediaItem] = useState<MediaItem | null>(null);
-  const [showToast, setShowToast] = useState(false); // ✅ Toast visibility
-  const [toastMessage, setToastMessage] = useState(''); // ✅ Toast message
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   const handleSave = () => {
     addToList(Number(id));
@@ -84,7 +84,7 @@ const SelectedMedia = () => {
       });
       const json = await res.json();
       const mediaData = json.data.Media;
-      const list = await getAllFromList(); // 👈 Check if it's in the list
+      const list = await getAllFromList();
       const isInMyList = list.some((entry: any) => Number(entry.animeId) === Number(mediaData.id));
       setMedia({ ...mediaData, isInMyList });
     } catch (err) {
@@ -160,23 +160,23 @@ const SelectedMedia = () => {
                 title: media.title.romaji,
                 imageUrl: media.coverImage.large,
                 type: media.type.toLowerCase(),
-                status: 'planning', // or use logic to map actual status
-                episodesWatched: 0, // optionally pull from your list
+                status: 'planning',
+                episodesWatched: 0,
                 totalEpisodes: media.episodes || 0,
-                rating: 0, // pull from your list if needed
+                rating: 0,
               };
 
               setSelectedMediaItem(mediaItem);
               setShowOverlay(true);
             } else {
-              handleSave(); // ✅ Save and toast
+              handleSave();
             }
           }}
         >
           {media.isInMyList ? 'Edit media' : 'Save to My List'}
         </button>
 
-          {/* ✅ Toast component */}
+          {/* Toast */}
           <ToastPopup show={showToast} message={toastMessage} onClose={() => setShowToast(false)} />
 
           {media.relations?.edges?.length > 0 && (
@@ -213,14 +213,13 @@ const SelectedMedia = () => {
               media={selectedMediaItem}
               onClose={() => setShowOverlay(false)}
               onSave={(updatedMedia) => {
-                // You can optionally update the local media state if needed
                 setSelectedMediaItem(updatedMedia);
                 setShowOverlay(false);
               }}
               onRemove={(id) => {
                 setSelectedMediaItem(null);
                 setShowOverlay(false);
-                navigate('/'); // or wherever you want after deletion
+                navigate('/');
               }}
             />
           )}

@@ -245,19 +245,18 @@ const Browse = () => {
         media={editingMedia}
         onClose={() => setEditingMedia(null)}
         onSave={(updatedMedia) => {
-          // Atnaujinti savo local listą (galima čia arba per reload)
           console.log('Saving changes:', updatedMedia);
           setToastMessage(`Updated: ${updatedMedia.title}`);
           setShowToast(true);
           setEditingMedia(null);
-          loadCategories(); // arba atnaujinti tik redaguotą elementą
+          loadCategories();
         }}
         onRemove={(id) => {
           console.log('Removing media with id:', id);
           setToastMessage(`Removed item with ID: ${id}`);
           setShowToast(true);
           setEditingMedia(null);
-          loadCategories(); // arba pašalinti tik tą elementą iš local state
+          loadCategories();
         }}
       />
     )}
@@ -298,7 +297,7 @@ const MediaGrid = ({ title, items, onSave, onEdit }: any) => {
           <div
           className="card h-100 me-3 d-flex flex-column"
           key={item.id}
-          style={{ minWidth: '150px', height: '310px' }} // arba koks aukštis tau patogus
+          style={{ minWidth: '150px', height: '310px' }}
           >
             <Link to={`/media/${item.id}`} className="text-decoration-none text-reset">
               <img src={item.coverImage.large} className="card-img-top" style={{ width: '148px', height: '210px', objectFit: 'cover' }} alt={item.title.romaji} loading="lazy" />

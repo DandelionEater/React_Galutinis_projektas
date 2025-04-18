@@ -1,6 +1,5 @@
-const API_URL = 'http://localhost:3000/api/anilist'; // Priklausomai nuo jūsų serverio vietos
+const API_URL = 'http://localhost:3000/api/anilist';
 
-// Gauti visus anime
 export const getAnime = async (animeid: number) => {
   try {
     const response = await fetch(`${API_URL}/get/${animeid}`, {

@@ -48,9 +48,9 @@ const MyList = () => {
             imageUrl: anime.coverImage,
             type: anime.type.toLowerCase(),
             status: status,
-            episodesWatched: element.completedEpisodes, // Replace with real data if needed
-            totalEpisodes: anime.episodes,  // Replace with real data if needed
-            rating: element.score,           // Replace with real data if needed
+            episodesWatched: element.completedEpisodes,
+            totalEpisodes: anime.episodes,
+            rating: element.score,
           } as MediaItem;
         })
       );

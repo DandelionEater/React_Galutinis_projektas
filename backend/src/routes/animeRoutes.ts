@@ -1,6 +1,6 @@
 import express, { Response } from 'express';
 import { authMiddleware } from '../middleware/authMiddleware';
-import User, { Anime } from "../models/User";
+import User from "../models/User";
 import CustomRequest from 'types/express';
 
 const router = express.Router();
